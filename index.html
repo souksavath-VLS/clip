@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clip Summarizer — สรุปวิดีโอเป็นคลิปสั้นพร้อมพากย์ไทย</title>
+<meta name="description" content="โปรแกรมสรุปและตัดต่อวิดีโอด้วย AI เป็นคลิปสั้นแนวตั้ง พร้อมเสียงพากย์ไทยและซับไตเติล สำหรับ Windows">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+  /* Layout: single-column editorial landing — sticky header, hero with a 9:16 clip mockup, feature grid, 3-step flow, download CTA, contact footer */
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef0f4;
+    --fg: #14161c;
+    --muted: #596070;
+    --border: #e2e5ec;
+    --accent: #f5411f;
+    --accent-ink: #ffffff;
+    --teal: #0f9c8e;
+    --shadow: 0 1px 2px rgba(20,22,28,.05), 0 12px 32px -16px rgba(20,22,28,.22);
+    --radius: 16px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d0f13;
+      --surface: #16191f;
+      --surface-2: #1d212a;
+      --fg: #eef1f6;
+      --muted: #99a2b2;
+      --border: #272c36;
+      --accent: #ff5a3c;
+      --accent-ink: #1a0b06;
+      --teal: #2bd0bf;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -20px rgba(0,0,0,.7);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d0f13;
+    --surface: #16191f;
+    --surface-2: #1d212a;
+    --fg: #eef1f6;
+    --muted: #99a2b2;
+    --border: #272c36;
+    --accent: #ff5a3c;
+    --accent-ink: #1a0b06;
+    --teal: #2bd0bf;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -20px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  img { max-width: 100%; display: block; }
+  [hidden] { display: none !important; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "IBM Plex Sans Thai", system-ui, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .brand, .eyebrow {
+    font-family: "Bai Jamjuree", "IBM Plex Sans Thai", system-ui, sans-serif;
+  }
+  a { color: inherit; }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+
+  /* header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar { display: flex; align-items: center; gap: 16px; padding-block: 12px; }
+  .brand { font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; display: flex; align-items: center; gap: 9px; }
+  .brand .mark {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: var(--accent); position: relative;
+  }
+  .brand .mark::after {
+    content: ""; position: absolute; top: 50%; left: 54%; transform: translate(-50%,-50%);
+    border-left: 8px solid var(--accent-ink); border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  }
+  .nav { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .nav a.link { padding: 8px 12px; border-radius: 9px; font-size: .92rem; color: var(--muted); text-decoration: none; }
+  .nav a.link:hover { color: var(--fg); background: var(--surface-2); }
+  .iconbtn {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--fg); cursor: pointer; font-size: 1rem; display: grid; place-items: center;
+  }
+  .iconbtn:hover { background: var(--surface-2); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    font-family: "Bai Jamjuree", sans-serif; font-weight: 600; font-size: 1rem;
+    padding: 13px 22px; border-radius: 12px; text-decoration: none; cursor: pointer;
+    border: 1px solid transparent; transition: transform .08s ease, box-shadow .2s ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--accent) 70%, transparent); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-sm { padding: 8px 15px; font-size: .9rem; }
+  .btn-ghost { background: var(--surface); color: var(--fg); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--surface-2); }
+  .btn-wa { background: #25d366; color: #05331b; border-color: transparent; }
+  .btn-wa:hover { transform: translateY(-1px); background: #28dd6c; }
+
+  /* hero */
+  .hero { padding-block: clamp(40px, 7vw, 80px); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(2rem, 5.2vw, 3.3rem); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 18px; text-wrap: balance; font-weight: 700; }
+  .hero h1 .hl { color: var(--accent); }
+  .hero p.lead { font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: var(--muted); margin: 0 0 28px; max-width: 34ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .cta-note { font-size: .86rem; color: var(--muted); margin-top: 14px; }
+
+  /* clip mockup (9:16, mirrors the real output: blurred fill + 16:9 content band, logo top-left, subtitle on band) */
+  .phone-stage { display: flex; justify-content: center; }
+  .phone {
+    width: min(270px, 78vw); aspect-ratio: 9 / 16; border-radius: 26px; overflow: hidden; position: relative;
+    border: 1px solid var(--border); box-shadow: var(--shadow); background: #0b0d12;
+  }
+  .phone .fill { position: absolute; inset: 0; background:
+      radial-gradient(120% 80% at 25% 15%, #6d3bf0 0%, transparent 55%),
+      radial-gradient(120% 90% at 85% 90%, #f5411f 0%, transparent 55%),
+      linear-gradient(160deg, #1b2340, #0b0d12);
+    filter: saturate(1.1); }
+  .phone .fill::after { content: ""; position: absolute; inset: 0; backdrop-filter: blur(2px); background: rgba(8,9,14,.28); }
+  .phone .band {
+    position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #10203a, #0a1526); overflow: hidden;
+  }
+  .phone .band .play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center;
+  }
+  .phone .band .play::after { content: ""; border-left: 13px solid #10203a; border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 3px; }
+  .phone .logo {
+    position: absolute; top: 9px; left: 9px; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff; display: grid; place-items: center; font-size: .62rem; font-weight: 700;
+    font-family: "Bai Jamjuree", sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+  .phone .sub {
+    position: absolute; left: 10px; right: 10px; bottom: 9px; text-align: center;
+    color: #fff; font-size: .72rem; font-weight: 600; line-height: 1.35; text-shadow: 0 1px 4px rgba(0,0,0,.9);
+  }
+  .phone .sub b { color: #ffd84a; }
+  .phone .chip {
+    position: absolute; top: 10px; right: 10px; font-size: .58rem; font-weight: 600; letter-spacing: .03em;
+    color: #fff; background: rgba(0,0,0,.42); padding: 3px 8px; border-radius: 999px; backdrop-filter: blur(4px);
+  }
+
+  /* sections */
+  section { padding-block: clamp(36px, 6vw, 68px); }
+  .sec-head { max-width: 46ch; margin-bottom: 34px; }
+  .sec-head .eyebrow { margin-bottom: 14px; }
+  .sec-head h2 { font-size: clamp(1.5rem, 3.6vw, 2.1rem); letter-spacing: -.015em; margin: 0 0 10px; text-wrap: balance; }
+  .sec-head p { color: var(--muted); margin: 0; font-size: 1.02rem; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .card .ic {
+    width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; font-size: 1.25rem;
+    background: color-mix(in srgb, var(--accent) 13%, var(--surface)); margin-bottom: 4px;
+  }
+  .card h3 { margin: 0; font-size: 1.08rem; letter-spacing: -.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: relative; }
+  .step .num {
+    font-family: "Bai Jamjuree", sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--accent-ink);
+    width: 34px; height: 34px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; margin-bottom: 14px;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 1.08rem; }
+  .step p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  /* download band */
+  .dl-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 22px; box-shadow: var(--shadow);
+    padding: clamp(26px, 4vw, 44px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 36px; align-items: center;
+  }
+  .dl-card h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 12px; letter-spacing: -.015em; }
+  .reqs { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+  .reqs li { display: flex; gap: 10px; align-items: flex-start; color: var(--muted); font-size: .96rem; }
+  .reqs li .tick { color: var(--teal); font-weight: 700; flex: none; }
+  .dl-action { display: flex; flex-direction: column; gap: 12px; text-align: center; }
+  .dl-action .btn-primary { width: 100%; font-size: 1.05rem; padding: 16px; }
+  .dl-meta { font-size: .84rem; color: var(--muted); }
+  .dl-meta b { color: var(--fg); font-weight: 600; }
+
+  /* footer / contact */
+  footer { border-top: 1px solid var(--border); margin-top: 20px; padding-block: 40px; }
+  .foot-grid { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: start; }
+  .contact-title { font-family: "Bai Jamjuree", sans-serif; font-weight: 600; margin: 0 0 14px; font-size: 1.1rem; }
+  .contact-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .contact-row .lbl { color: var(--muted); font-size: .9rem; min-width: 92px; }
+  .contact-row .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .copybtn {
+    border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer;
+    font-size: .78rem; padding: 4px 10px; border-radius: 8px; font-family: inherit;
+  }
+  .copybtn:hover { color: var(--fg); background: var(--surface-2); }
+  .copybtn.ok { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, var(--border)); }
+  .legal { color: var(--muted); font-size: .85rem; text-align: right; }
+  .legal .brand-sm { color: var(--fg); font-weight: 600; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .phone-stage { order: -1; }
+    .features, .steps { grid-template-columns: 1fr 1fr; }
+    .dl-card { grid-template-columns: 1fr; gap: 24px; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .legal { text-align: left; }
+  }
+  @media (max-width: 520px) {
+    .features, .steps { grid-template-columns: 1fr; }
+    .nav a.link { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <span class="brand"><span class="mark"></span>Clip Summarizer</span>
+    <nav class="nav">
+      <a class="link" href="#features">ฟีเจอร์</a>
+      <a class="link" href="#how">วิธีใช้</a>
+      <a class="link" href="#download">ดาวน์โหลด</a>
+      <a class="btn btn-primary btn-sm" href="https://drive.usercontent.google.com/download?id=1s9I71l22p_qL_4GS5KLaJIRzFD--YUEP&amp;export=download&amp;authuser=0" target="_blank" rel="noopener">ดาวน์โหลด</a>
+      <button class="iconbtn" id="theme" type="button" aria-label="สลับธีมสว่าง/มืด">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">โปรแกรมเดสก์ท็อป · Windows</span>
+          <h1>สรุปวิดีโอยาว เหลือ<span class="hl">คลิปสั้น</span> พร้อมพากย์ไทย อัตโนมัติ</h1>
+          <p class="lead">วางลิงก์ YouTube, TikTok หรือ Facebook แล้วให้ AI สรุปเนื้อหา ตัดต่อเป็นคลิปแนวตั้ง พร้อมเสียงพากย์ไทยและซับไตเติล ในไม่กี่คลิก</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://drive.usercontent.google.com/download?id=1s9I71l22p_qL_4GS5KLaJIRzFD--YUEP&amp;export=download&amp;authuser=0" target="_blank" rel="noopener">⬇ ดาวน์โหลดโปรแกรม</a>
+            <a class="btn btn-ghost" href="#how">ดูวิธีใช้งาน</a>
+          </div>
+          <p class="cta-note">สำหรับ Windows 10/11 (64-bit) · ติดตั้งครั้งแรกจะขอคีย์เปิดใช้งาน</p>
+        </div>
+        <div class="phone-stage">
+          <div class="phone" role="img" aria-label="ตัวอย่างคลิปแนวตั้งที่โปรแกรมสร้าง มีโลโก้มุมซ้ายบนและซับไตเติลพากย์ไทย">
+            <div class="fill"></div>
+            <div class="band">
+              <span class="logo">LOGO</span>
+              <span class="chip">AI RECAP</span>
+              <span class="play"></span>
+            </div>
+            <div class="sub">สรุปเนื้อหาสำคัญ <b>ภายใน 60 วินาที</b><br>พร้อมเสียงพากย์ไทย</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="sec-head">
+        <span class="eyebrow">สิ่งที่ทำได้</span>
+        <h2>จากคลิปยาว เป็นคอนเทนต์พร้อมโพสต์</h2>
+        <p>ครบทุกขั้นตอนในโปรแกรมเดียว ไม่ต้องสลับหลายแอป</p>
+      </div>
+      <div class="features">
+        <div class="card"><div class="ic">🧠</div><h3>สรุปด้วย AI</h3><p>Gemini อ่านเนื้อหาทั้งคลิป แล้วย่อให้เหลือเฉพาะใจความสำคัญ</p></div>
+        <div class="card"><div class="ic">✂️</div><h3>ตัดต่ออัตโนมัติ</h3><p>ได้คลิปแนวตั้ง 9:16 พร้อมพื้นหลังเบลอ เหมาะกับ Reels, Shorts, TikTok</p></div>
+        <div class="card"><div class="ic">🎙️</div><h3>พากย์ไทย + ซับ</h3><p>เสียงพากย์ภาษาไทยและคำบรรยายตรงจังหวะ สร้างให้อัตโนมัติ</p></div>
+        <div class="card"><div class="ic">🔗</div><h3>รองรับหลายแพลตฟอร์ม</h3><p>YouTube, TikTok, Facebook — ก็อปลิงก์มาวางได้เลย</p></div>
+        <div class="card"><div class="ic">✨</div><h3>โหมดเล่าเรื่อง</h3><p>ใส่เอฟเฟกต์หิ่งห้อยและเพลงพื้นหลัง ให้คลิปน่าดูยิ่งขึ้น</p></div>
+        <div class="card"><div class="ic">🔄</div><h3>อัปเดตในตัว</h3><p>มีเวอร์ชันใหม่กดอัปเดตได้จากในโปรแกรม ไม่ต้องโหลดใหม่เอง</p></div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec-head">
+        <span class="eyebrow">วิธีใช้งาน</span>
+        <h2>สามขั้นตอน ก็ได้คลิป</h2>
+        <p>ใช้งานง่าย ไม่ต้องมีพื้นฐานตัดต่อ</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><h3>วางลิงก์วิดีโอ</h3><p>ก็อปลิงก์คลิปที่อยากสรุป มาวางในโปรแกรม</p></div>
+        <div class="step"><div class="num">2</div><h3>AI สรุป + ตัดต่อ</h3><p>ระบบสรุปเนื้อหา เลือกช่วงสำคัญ แล้วประกอบเป็นคลิปสั้นพร้อมพากย์และซับ</p></div>
+        <div class="step"><div class="num">3</div><h3>ได้คลิปพร้อมลง</h3><p>บันทึกไฟล์วิดีโอที่ได้ แล้วนำไปโพสต์ได้ทันที</p></div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="dl-card">
+        <div>
+          <h2>พร้อมเริ่มใช้งานแล้ว</h2>
+          <p style="color:var(--muted); margin:0;">ดาวน์โหลดตัวติดตั้งสำหรับ Windows เปิดโปรแกรมครั้งแรกจะมีช่องให้ใส่คีย์เปิดใช้งาน</p>
+          <ul class="reqs">
+            <li><span class="tick">✓</span> Windows 10 หรือ 11 (64-bit)</li>
+            <li><span class="tick">✓</span> ต้องเชื่อมต่ออินเทอร์เน็ตขณะใช้งาน</li>
+            <li><span class="tick">✓</span> ต้องมีคีย์เปิดใช้งาน (ติดต่อผู้ขายด้านล่าง)</li>
+          </ul>
+        </div>
+        <div class="dl-action">
+          <a class="btn btn-primary" href="https://drive.usercontent.google.com/download?id=1s9I71l22p_qL_4GS5KLaJIRzFD--YUEP&amp;export=download&amp;authuser=0" target="_blank" rel="noopener">⬇ ดาวน์โหลดโปรแกรม</a>
+          <span class="dl-meta">ไฟล์ติดตั้ง <b>~150 MB</b> · ผ่าน Google Drive</span>
+          <a class="btn btn-wa" href="https://wa.me/8562077307737?text=สนใจโปรแกรม%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener">💬 ทักซื้อคีย์ทาง WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div>
+        <p class="contact-title">ซื้อคีย์ / สอบถามการใช้งาน</p>
+        <div class="contact-row">
+          <span class="lbl">WhatsApp / โทร</span>
+          <span class="val" id="phone">+856 20 7730 7737</span>
+          <button class="copybtn" type="button" data-copy="+856 20 7730 7737">คัดลอก</button>
+        </div>
+        <div class="contact-row">
+          <span class="lbl">อีเมล</span>
+          <span class="val" id="email">minerfarm111@gmail.com</span>
+          <button class="copybtn" type="button" data-copy="minerfarm111@gmail.com">คัดลอก</button>
+        </div>
+        <a class="btn btn-wa" href="https://wa.me/8562077307737?text=สนใจโปรแกรม%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener" style="margin-top:8px;">💬 แชตผ่าน WhatsApp</a>
+      </div>
+      <div class="legal">
+        <span class="brand-sm">Clip Summarizer</span><br>
+        © 2026 Souksavath Vilasack<br>สงวนลิขสิทธิ์
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('theme');
+    try { var s = localStorage.getItem('cs-theme'); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      var isDark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      var next = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('cs-theme', next); } catch (e) {}
+    });
+    document.querySelectorAll('.copybtn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var text = b.getAttribute('data-copy'), done = function () {
+          var old = b.textContent; b.textContent = 'คัดลอกแล้ว ✓'; b.classList.add('ok');
+          setTimeout(function () { b.textContent = old; b.classList.remove('ok'); }, 1600);
+        };
+        try {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+        } catch (e) { fallback(); }
+        function fallback() {
+          var r = document.createRange(); r.selectNodeContents(b.previousElementSibling);
+          var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
