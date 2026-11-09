@@ -232,6 +232,14 @@
   .plan .plan-cta .btn { width: 100%; }
   .price-note { color: var(--muted); font-size: .88rem; margin-top: 22px; max-width: 70ch; }
 
+  /* demo videos */
+  .demo-shorts { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 16px; }
+  .vid { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #000; box-shadow: var(--shadow); }
+  .vid iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .vid-9x16 { width: 258px; max-width: 78vw; aspect-ratio: 9 / 16; }
+  .vid-16x9 { aspect-ratio: 16 / 9; width: 100%; }
+  .demo-wide { max-width: 680px; margin: 0 auto; }
+
   /* footer / contact */
   footer { border-top: 1px solid var(--border); margin-top: 20px; padding-block: 40px; }
   .foot-grid { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: start; }
@@ -271,6 +279,7 @@
     <nav class="nav">
       <a class="link" href="#features">ฟีเจอร์</a>
       <a class="link" href="#how">วิธีใช้</a>
+      <a class="link" href="#examples">ตัวอย่าง</a>
       <a class="link" href="#pricing">ราคา</a>
       <a class="link" href="#download">ดาวน์โหลด</a>
       <a class="btn btn-primary btn-sm" href="https://drive.usercontent.google.com/download?id=1s9I71l22p_qL_4GS5KLaJIRzFD--YUEP&amp;export=download&amp;authuser=0" target="_blank" rel="noopener">ดาวน์โหลด</a>
@@ -335,6 +344,19 @@
         <div class="step"><div class="num">2</div><h3>AI สรุป + ตัดต่อ</h3><p>ระบบสรุปเนื้อหา เลือกช่วงสำคัญ แล้วประกอบเป็นคลิปสั้นพร้อมพากย์และซับ</p></div>
         <div class="step"><div class="num">3</div><h3>ได้คลิปพร้อมลง</h3><p>บันทึกไฟล์วิดีโอที่ได้ แล้วนำไปโพสต์ได้ทันที</p></div>
       </div>
+    </section>
+
+    <section id="examples">
+      <div class="sec-head">
+        <span class="eyebrow">ตัวอย่างผลงาน</span>
+        <h2>คลิปที่สร้างจากโปรแกรม</h2>
+        <p>ตัวอย่างจริงที่สรุปและตัดต่อด้วย Clip Summarizer</p>
+      </div>
+      <div class="demo-shorts">
+        <div class="vid vid-9x16"><iframe src="https://www.youtube-nocookie.com/embed/Ff1dXhDDC0s" title="ตัวอย่างคลิปสั้น — สรุปคลิป IShowSpeed" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <div class="vid vid-9x16"><iframe src="https://www.youtube-nocookie.com/embed/Uca84J7_X-U" title="ตัวอย่างคลิปสั้น — สรุป SPY×FAMILY" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+      </div>
+      <div class="vid vid-16x9 demo-wide"><iframe src="https://www.youtube-nocookie.com/embed/4Jn_w46kozU" title="ตัวอย่างคลิป — สรุปหนัง Dolls 2026" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
     </section>
 
     <section id="pricing">
