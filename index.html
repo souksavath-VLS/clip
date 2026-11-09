@@ -210,6 +210,28 @@
   .dl-meta { font-size: .84rem; color: var(--muted); }
   .dl-meta b { color: var(--fg); font-weight: 600; }
 
+  /* pricing */
+  .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+  .plan { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 22px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow); }
+  .plan .badge {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    background: var(--accent); color: var(--accent-ink); font-size: .72rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 999px; font-family: "Bai Jamjuree", sans-serif;
+  }
+  .plan .dur { font-family: "Bai Jamjuree", sans-serif; font-weight: 600; font-size: 1.08rem; }
+  .plan .price { display: flex; align-items: baseline; gap: 6px; }
+  .plan .price .amt { font-family: "Bai Jamjuree", sans-serif; font-weight: 700; font-size: 1.85rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .plan .price .unit { color: var(--muted); font-size: .9rem; font-weight: 600; }
+  .plan .permo { color: var(--muted); font-size: .85rem; margin-top: -4px; }
+  .plan .save { align-self: flex-start; font-size: .76rem; font-weight: 600; color: var(--teal); background: color-mix(in srgb, var(--teal) 14%, transparent); padding: 3px 10px; border-radius: 999px; }
+  .plan ul { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 8px; }
+  .plan ul li { display: flex; gap: 8px; font-size: .9rem; color: var(--muted); }
+  .plan ul li .tick { color: var(--teal); flex: none; font-weight: 700; }
+  .plan .plan-cta { margin-top: auto; padding-top: 6px; }
+  .plan .plan-cta .btn { width: 100%; }
+  .price-note { color: var(--muted); font-size: .88rem; margin-top: 22px; max-width: 70ch; }
+
   /* footer / contact */
   footer { border-top: 1px solid var(--border); margin-top: 20px; padding-block: 40px; }
   .foot-grid { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: start; }
@@ -229,13 +251,13 @@
   @media (max-width: 860px) {
     .hero-grid { grid-template-columns: 1fr; }
     .phone-stage { order: -1; }
-    .features, .steps { grid-template-columns: 1fr 1fr; }
+    .features, .steps, .pricing-grid { grid-template-columns: 1fr 1fr; }
     .dl-card { grid-template-columns: 1fr; gap: 24px; }
     .foot-grid { grid-template-columns: 1fr; }
     .legal { text-align: left; }
   }
   @media (max-width: 520px) {
-    .features, .steps { grid-template-columns: 1fr; }
+    .features, .steps, .pricing-grid { grid-template-columns: 1fr; }
     .nav a.link { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -249,6 +271,7 @@
     <nav class="nav">
       <a class="link" href="#features">ฟีเจอร์</a>
       <a class="link" href="#how">วิธีใช้</a>
+      <a class="link" href="#pricing">ราคา</a>
       <a class="link" href="#download">ดาวน์โหลด</a>
       <a class="btn btn-primary btn-sm" href="https://drive.usercontent.google.com/download?id=1s9I71l22p_qL_4GS5KLaJIRzFD--YUEP&amp;export=download&amp;authuser=0" target="_blank" rel="noopener">ดาวน์โหลด</a>
       <button class="iconbtn" id="theme" type="button" aria-label="สลับธีมสว่าง/มืด">◐</button>
@@ -312,6 +335,70 @@
         <div class="step"><div class="num">2</div><h3>AI สรุป + ตัดต่อ</h3><p>ระบบสรุปเนื้อหา เลือกช่วงสำคัญ แล้วประกอบเป็นคลิปสั้นพร้อมพากย์และซับ</p></div>
         <div class="step"><div class="num">3</div><h3>ได้คลิปพร้อมลง</h3><p>บันทึกไฟล์วิดีโอที่ได้ แล้วนำไปโพสต์ได้ทันที</p></div>
       </div>
+    </section>
+
+    <section id="pricing">
+      <div class="sec-head">
+        <span class="eyebrow">แพ็กเกจและราคา</span>
+        <h2>เลือกแพ็กเกจที่คุ้มสำหรับคุณ</h2>
+        <p>ทุกแพ็กเกจใช้ได้เต็มทุกฟีเจอร์ · ทำคลิปไม่จำกัด · ยิ่งนาน ยิ่งถูกต่อเดือน</p>
+      </div>
+      <div class="pricing-grid">
+
+        <div class="plan">
+          <span class="dur">1 เดือน</span>
+          <div class="price"><span class="amt">70,000</span><span class="unit">kip</span></div>
+          <span class="permo">70,000 kip / เดือน</span>
+          <ul>
+            <li><span class="tick">✓</span> ใช้ได้ทุกฟีเจอร์</li>
+            <li><span class="tick">✓</span> ทำคลิปไม่จำกัด</li>
+            <li><span class="tick">✓</span> อัปเดตในตัวฟรี</li>
+          </ul>
+          <div class="plan-cta"><a class="btn btn-wa" href="https://wa.me/8562077307737?text=สนใจแพ็กเกจ%201%20เดือน%20(70,000%20kip)%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener">💬 เลือกแพ็กเกจนี้</a></div>
+        </div>
+
+        <div class="plan">
+          <span class="dur">3 เดือน</span>
+          <div class="price"><span class="amt">180,000</span><span class="unit">kip</span></div>
+          <span class="permo">เฉลี่ย 60,000 kip / เดือน</span>
+          <span class="save">ประหยัด 30,000 kip</span>
+          <ul>
+            <li><span class="tick">✓</span> ใช้ได้ทุกฟีเจอร์</li>
+            <li><span class="tick">✓</span> ทำคลิปไม่จำกัด</li>
+            <li><span class="tick">✓</span> อัปเดตในตัวฟรี</li>
+          </ul>
+          <div class="plan-cta"><a class="btn btn-wa" href="https://wa.me/8562077307737?text=สนใจแพ็กเกจ%203%20เดือน%20(180,000%20kip)%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener">💬 เลือกแพ็กเกจนี้</a></div>
+        </div>
+
+        <div class="plan">
+          <span class="dur">6 เดือน</span>
+          <div class="price"><span class="amt">330,000</span><span class="unit">kip</span></div>
+          <span class="permo">เฉลี่ย 55,000 kip / เดือน</span>
+          <span class="save">ประหยัด 90,000 kip</span>
+          <ul>
+            <li><span class="tick">✓</span> ใช้ได้ทุกฟีเจอร์</li>
+            <li><span class="tick">✓</span> ทำคลิปไม่จำกัด</li>
+            <li><span class="tick">✓</span> อัปเดตในตัวฟรี</li>
+          </ul>
+          <div class="plan-cta"><a class="btn btn-wa" href="https://wa.me/8562077307737?text=สนใจแพ็กเกจ%206%20เดือน%20(330,000%20kip)%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener">💬 เลือกแพ็กเกจนี้</a></div>
+        </div>
+
+        <div class="plan featured">
+          <span class="badge">⭐ คุ้มสุด</span>
+          <span class="dur">1 ปี (12 เดือน)</span>
+          <div class="price"><span class="amt">600,000</span><span class="unit">kip</span></div>
+          <span class="permo">เฉลี่ย 50,000 kip / เดือน</span>
+          <span class="save">ประหยัด 240,000 kip</span>
+          <ul>
+            <li><span class="tick">✓</span> ใช้ได้ทุกฟีเจอร์</li>
+            <li><span class="tick">✓</span> ทำคลิปไม่จำกัด</li>
+            <li><span class="tick">✓</span> อัปเดตในตัวฟรี</li>
+          </ul>
+          <div class="plan-cta"><a class="btn btn-primary" href="https://wa.me/8562077307737?text=สนใจแพ็กเกจ%201%20ปี%20(600,000%20kip)%20Clip%20Summarizer%20ครับ" target="_blank" rel="noopener">💬 เลือกแพ็กเกจนี้</a></div>
+        </div>
+
+      </div>
+      <p class="price-note">ราคาเป็นเงินกีบ (LAK) · ชำระโดยโอนเงินแล้วแจ้งสลิปทาง WhatsApp · หลังตรวจยอดแล้วจะส่งคีย์เปิดใช้งานให้ · ไม่มีการคืนเงินทุกกรณี</p>
     </section>
 
     <section id="download">
